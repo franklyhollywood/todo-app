@@ -1,4 +1,5 @@
 import { addTodo, getUser, getTodos } from '../local-storage-utils.js';
+import { renderTodoItem } from '../render-utils.js';
 
 
 //grab the form element
@@ -14,38 +15,43 @@ const todoEl = document.getElementById('todo-items');
 //grab the user from local storage and set it to a constant
 const user = getUser();
 
+const todos = getTodos();
+
+for (let todo of todos) {
+    const listItem = renderTodoItem(todo);
+        //append LI to todoEl
+    todoEl.append(listItem);
+    
+}
+
 //add event listener to the form
 todoFormEl.addEventListener('submit', (event) => {
-    //prevent default
+    //prevent default form activity
     event.preventDefault();
     //package into javascript (newformdata)
     const data = new FormData(todoFormEl);
     const userInput = data.get('todo-input');
     //console.log(userInput);
-    addTodo(userInput);
     //Inject the input text into UL (textcontent)
     //todoEl.textContent = data.get('todo-input');
     //set the input text to a const
     //push that const into todos array
-    const todos = getTodos();
-    console.log(todos);
     //set the user object with updated array to local storage
-    
-    //loop through todos and console log each todo
+    addTodo(userInput);
+    //Getting the user and returning the users todos...
+    const todos = getTodos();
+    // clear out existing todo list
+    todoEl.textContent = '';
+    //loop through todos and render each todo to the UL (Including to do just added)
     for (let todo of todos) {
-        
-        const listItem = document.createElement('li');
-        const completedButton = document.createElement('button');
-        const text = document.createElement('p');
 
-        //update text in li
-        listItem.textContent = todoEl;
-        //give text to the button
-        completedButton.textContent = 'completed';
-        //append text and button to LI
-        listItem.append(text, completedButton);
-        //append LI to todoEl
-        listItem.append(todoEl);
+        const listItem = renderTodoItem(todo);
+                //append LI to todoEl
+        todoEl.append(listItem);
     }
+        
+    
     
 });
+
+
