@@ -53,7 +53,7 @@ export function addTodo(message) {
 export function completeTodo(id) {
     const todos = getTodos();
 
-    const matchingTodo = todos.find(todo => todo.id === id);
+    const matchingTodo = todos.find((todo) => todo.id === id);
 
     matchingTodo.completed = true;
 
